@@ -7,9 +7,9 @@ WordPress - Playlist shortcode with external audio or video files
 
 This plugin allows you to use external audio or video files with the native WordPress playlist, through the use of a shortcode.
 
-This started as an answer on WordPress StackExchange, see here:
+This started as an answer on WordPress StackExchange, see [here](http://wordpress.stackexchange.com/questions/141766/making-audio-playlist-with-external-audio-files/).
 
-http://wordpress.stackexchange.com/questions/141766/making-audio-playlist-with-external-audio-files/
+The plugin works on PHP 5.3+.
 
 ###Example 1
 
