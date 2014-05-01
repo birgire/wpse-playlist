@@ -1,7 +1,10 @@
 <?php 
 /**
  * Plugin Name: WPSE Playlist shortcode for external files
- * Plugin URI: http://wordpress.stackexchange.com/q/141766/
+ * Plugin URI:  https://github.com/birgire/wpse-playlist
+ * Author:      birgire
+ * Author URI:  https://github.com/birgire
+ * Version:     0.0.1
  */
 
 add_action( 'wp', 'wpse_playlist_init' );
