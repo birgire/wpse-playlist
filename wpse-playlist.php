@@ -5,7 +5,7 @@
  * Plugin URI:  https://github.com/birgire/wpse-playlist
  * Author:      birgire
  * Author URI:  https://github.com/birgire
- * Version:     0.0.2
+ * Version:     0.0.3
  */
 
 namespace birgire;
