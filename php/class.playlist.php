@@ -4,7 +4,7 @@
  * Class Playlist
  */
 
-Namespace birgire;
+namespace birgire;
 
 class Playlist
 {
@@ -66,8 +66,16 @@ class Playlist
 
         // Nested shortcode support:
         $this->type           = ( in_array( $atts['type'], $this->types, TRUE ) ) ? $atts['type'] : 'audio';
-        $content              = substr(  strip_tags( nl2br( do_shortcode( $content ) ) ), 0, -2 );
-
+ 
+		// Get tracs:
+		$content              = strip_tags( nl2br( do_shortcode( $content ) ) );
+		
+		// Replace last comma:
+	    if( FALSE !== ( $pos = strrpos( $content, ',' ) ) )
+		{
+			$content = substr_replace( $content, '', $pos, 1 );
+		}
+				
         // Enqueue default scripts and styles for the playlist.
         ( 1 === $this->instance ) && do_action( 'wp_playlist_scripts', $atts['type'], $atts['style'] );
 
