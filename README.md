@@ -40,3 +40,7 @@ The video playlist can be generated with:
         [wpse_trac caption="Another cool video showing how live widgets previews works in WordPress 3.9" src="//s.w.org/images/core/3.9/widgets.mp4" image_src="/wp-content/uploads/2014/04/widgets_screen2.png"]
     [/wpse_playlist]
 
+
+###Changelog
+
+0.0.5 - Fixed: added the missing script class to support WordPress 4.0 (Props: @ruLait)

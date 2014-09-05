@@ -10,12 +10,12 @@ class Playlist
 {
     protected $type     = '';
     protected $types    = array( 'audio', 'video' );
-	protected $instance = 0;
+    protected $instance = 0;
     
-	/**
-	 * Init - Register shortcodes
-	 */
-	 
+    /**
+     * Init - Register shortcodes
+     */
+ 
     public function init()
     {
         add_shortcode( 'wpse_playlist', array( $this, 'playlist_shortcode' ) );
@@ -23,9 +23,9 @@ class Playlist
     }
 
 
-	/**
-	 * Callback for the [wpse_playlist] shortcode
-	 */
+    /**
+     * Callback for the [wpse_playlist] shortcode
+     */
 	 
     public function playlist_shortcode( $atts = array(), $content = '' ) 
     {        
@@ -48,7 +48,7 @@ class Playlist
 
         //----------
         // Input
-	    //----------
+        //----------
         $atts['id']           = esc_attr( $atts['id'] );
         $atts['type']         = esc_attr( $atts['type'] );
         $atts['style']        = esc_attr( $atts['style'] );
@@ -61,36 +61,38 @@ class Playlist
         $atts['artists']      = filter_var( $atts['artists'], FILTER_VALIDATE_BOOLEAN );
         $atts['current']      = filter_var( $atts['current'], FILTER_VALIDATE_BOOLEAN );
 
-		// Video specific:
+        // Video specific:
         $atts['loop']         = filter_var( $atts['loop'], FILTER_VALIDATE_BOOLEAN );
 
         // Nested shortcode support:
         $this->type           = ( in_array( $atts['type'], $this->types, TRUE ) ) ? $atts['type'] : 'audio';
  
-		// Get tracs:
-		$content              = strip_tags( nl2br( do_shortcode( $content ) ) );
-		
-		// Replace last comma:
-	    if( FALSE !== ( $pos = strrpos( $content, ',' ) ) )
-		{
-			$content = substr_replace( $content, '', $pos, 1 );
-		}
+        // Get tracs:
+	$content              = strip_tags( nl2br( do_shortcode( $content ) ) );
+	
+        // Replace last comma:
+        if( FALSE !== ( $pos = strrpos( $content, ',' ) ) )
+        {
+            $content = substr_replace( $content, '', $pos, 1 );
+        }
 				
         // Enqueue default scripts and styles for the playlist.
         ( 1 === $this->instance ) && do_action( 'wp_playlist_scripts', $atts['type'], $atts['style'] );
-
-	    //----------
+  
+        //----------
         // Output
-	    //----------
+        //----------
         $html = '';
         $html .= sprintf( '<div class="wp-playlist wp-%s-playlist wp-playlist-%s">', 
-	        $this->type, 
-			$atts['style'] 
-		);
+	    $this->type, 
+            $atts['style'] 
+        );
 
-		// Current audio item:
-		if( $atts['current'] && 'audio' === $this->type )
-			$html .= '<div class="wp-playlist-current-item"></div>';   
+        // Current audio item:
+        if( $atts['current'] && 'audio' === $this->type )
+	{
+            $html .= '<div class="wp-playlist-current-item"></div>';   
+        }
 
         // Video player:					  
         if( 'video' === $this->type ):
@@ -102,16 +104,16 @@ class Playlist
         // Audio player:					  
         else:
             $html .= sprintf( '<audio controls="controls" preload="metadata"></audio>', 
-			    $atts['style'] 
+                $atts['style'] 
             );
         endif;
 
-	   // Next/Previous:
-	    $html .= '<div class="wp-playlist-next"></div><div class="wp-playlist-prev"></div>';
+        // Next/Previous:
+        $html .= '<div class="wp-playlist-next"></div><div class="wp-playlist-prev"></div>';
 
         // JSON	
         $html .= sprintf( '
-            <script type="application/json">{
+            <script class="wp-playlist-script" type="application/json">{
                 "type":"%s",
                 "tracklist":%b,
                 "tracknumbers":%b,
@@ -128,13 +130,14 @@ class Playlist
         );
 
         return $html;
-    }
+        }
 
-	/**
-	 * Callback for the [wpse_trac] shortcode
-	 */
 
-	 public function trac_shortcode( $atts = array(), $content = '' ) 
+    /**
+     * Callback for the [wpse_trac] shortcode
+     */
+
+    public function trac_shortcode( $atts = array(), $content = '' ) 
     {        
         $atts = shortcode_atts( 
             array(
@@ -159,9 +162,9 @@ class Playlist
             'dimensions_resized_height'  => '400',
         ), $atts, 'wpse_trac_shortcode' );
 
-	    //----------
+        //----------
         // Input
-	    //----------
+        //----------
         $data['src']                      = esc_url( $atts['src'] );
         $data['title']                    = sanitize_text_field( $atts['title'] );
         $data['type']                     = sanitize_text_field( $atts['type'] );
@@ -175,7 +178,7 @@ class Playlist
         $data['thumb']['height']          = intval( $atts['thumb_height'] );
         $data['meta']['length_formatted'] = sanitize_text_field( $atts['meta_length_formatted'] );
 
-	    // Video related:
+        // Video related:
         if( 'video' === $this->type ) 
         {
             $data['dimensions']['original']['width']  = sanitize_text_field( $atts['dimensions_original_width'] );
@@ -190,9 +193,9 @@ class Playlist
             $data['meta']['genre']            = sanitize_text_field( $atts['meta_genre'] );
         }
 
-	    //----------
+        //----------
         // Output:           
-	    //----------
+        //----------
         return json_encode( $data ) . ',';      
     }
 
