@@ -9,12 +9,14 @@ This plugin allows you to use external audio or video files with the native Word
 
 This started as an answer on WordPress StackExchange, see [here](http://wordpress.stackexchange.com/questions/141766/making-audio-playlist-with-external-audio-files/).
 
-The plugin works on PHP 5.3+ and has a support for the GitHub Updater.
+The plugin works on PHP 5.3+ and WordPress 4.0+ 
+
+It supports the GitHub Updater.
 
 ###Supported shortcodes and their default attributes:
 
     [wpse_playlist type="audio" 
-                   id="" 
+                   class="wpse-playlist" 
                    current="true" 
                    autoplay="false" 
                    style="light" 
