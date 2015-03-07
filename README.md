@@ -101,6 +101,7 @@ Any suggestions are welcomed.
     - Added: Support for the GitHub Updater. (Probs: @BlaineMoore)
     - Added: More info in the README.md file.
     - Changed: Refactored regarding late escaping.
+    - Changed: Replaced filter_var() with wp_validate_boolean(), so we need WordPress 4.0+.
     - Fixed: Some minor adjustments.
 
 0.0.5 
