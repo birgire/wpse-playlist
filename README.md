@@ -95,4 +95,11 @@ Any suggestions are welcomed.
 
 ###Changelog
 
-0.0.5 - Fixed: added the missing script class to support WordPress 4.0 (Props: @ruLait)
+0.0.6 
+    - Added: Support for the autoplay attribute.
+    - Added: Support for the GitHub Updater. (Probs: @BlaineMoore)
+    - Added: More info in the README.md file.
+    - Changed: Refactored regarding late escaping.
+    - Fixed: Some minor adjustments.
+0.0.5 
+    - Fixed: added the missing script class to support WordPress 4.0 (Props: @ruLait)
