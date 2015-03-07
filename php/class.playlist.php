@@ -25,67 +25,68 @@ class Playlist
 
     /**
      * Callback for the [wpse_playlist] shortcode
+     *
+     * @uses wp_validate_boolean() from WordPress 4.0
      */
 	 
     public function playlist_shortcode( $atts = array(), $content = '' ) 
     {        
-        $this->instance++;
+        global $content_width;  // Theme dependent content width
+        $this->instance++;      // Counter to activate the 'wp_playlist_scripts' action only once
+
         $atts = shortcode_atts( 
             array(
-                'type'          => 'audio',
-                'style'         => 'light',
-                'tracklist'     => 'true',
-                'tracknumbers'  => 'true',
-                'images'        => 'true',
-                'artists'       => 'true',
-                'current'       => 'true',
-				'loop'          => 'false',
-				'autoplay'      => 'false',
-				'id'            => '',
-				'width'         => '',
-				'height'        => '',
-            ), $atts, 'wpse_playlist_shortcode' );
-
-        //----------
-        // Input
-        //----------
-        $atts['id']           = esc_attr( $atts['id'] );
-        $atts['type']         = esc_attr( $atts['type'] );
-        $atts['style']        = esc_attr( $atts['style'] );
-        $atts['tracklist']    = filter_var( $atts['tracklist'], FILTER_VALIDATE_BOOLEAN );
-        $atts['tracknumbers'] = filter_var( $atts['tracknumbers'], FILTER_VALIDATE_BOOLEAN );
-        $atts['images']       = filter_var( $atts['images'], FILTER_VALIDATE_BOOLEAN );
-        $atts['autoplay']     = filter_var( $atts['current'], FILTER_VALIDATE_BOOLEAN );
-
-        // Audio specific:
-        $atts['artists']      = filter_var( $atts['artists'], FILTER_VALIDATE_BOOLEAN );
-        $atts['current']      = filter_var( $atts['current'], FILTER_VALIDATE_BOOLEAN );
-
-        // Video specific:
-        $atts['loop']         = filter_var( $atts['loop'], FILTER_VALIDATE_BOOLEAN );
+                'type'           => 'audio',
+                'style'          => 'light',
+                'tracklist'      => 'true',
+                'tracknumbers'   => 'true',
+                'images'         => 'true',     // Audio related
+                'artists'        => 'true',     // Audio related
+                'current'        => 'true',
+		'autoplay'       => 'false',
+		'class'          => 'wpse-playlist',
+		'width'          => '',
+		'height'         => '',
+		'outer'          => '20',
+		'default_width'  => '640',
+		'default_height' => '380',
+            ), 
+            $atts, 
+            'wpse_playlist_shortcode' 
+        );
+   
+        // Autoplay:
+        $autoplay = wp_validate_boolean( $atts['autoplay'] ) ? 'autoplay="yes"' : '';
 
         // Nested shortcode support:
-        $this->type           = ( in_array( $atts['type'], $this->types, TRUE ) ) ? $atts['type'] : 'audio';
+        $this->type = ( in_array( $atts['type'], $this->types, TRUE ) ) ? esc_attr( $atts['type'] ) : 'audio';
  
-        // Get tracs:
-	$content              = strip_tags( nl2br( do_shortcode( $content ) ) );
-	
-        // Replace last comma:
-        if( FALSE !== ( $pos = strrpos( $content, ',' ) ) )
-        {
-            $content = substr_replace( $content, '', $pos, 1 );
-        }
-				
         // Enqueue default scripts and styles for the playlist.
-        ( 1 === $this->instance ) && do_action( 'wp_playlist_scripts', $atts['type'], $atts['style'] );
-  
+        ( 1 === $this->instance ) && do_action( 'wp_playlist_scripts', esc_attr( $atts['type'] ), esc_attr( $atts['style'] ) );
+        
+        //----------
+        // Height & Width - Adjusted from the WordPress core
+        //----------
+        
+        $width = esc_attr( $atts['width'] );       
+        if( empty( $width ) )
+            $width = empty( $content_width ) 
+                ? intval( $atts['default_width'] ) 
+                : ( $content_width - intval( $atts['outer'] ) );
+       
+        $height = esc_attr( $atts['height'] );       
+        if( empty( $height ) && intval( $atts['default_height'] ) > 0 )
+            $height = empty( $content_width ) 
+                ? intval( $atts['default_height'] )
+                : round( ( intval( $atts['default_height'] ) * $width ) / intval( $atts['default_width'] ) );
+
         //----------
         // Output
         //----------
         $html = '';
-        $html .= sprintf( '<div class="wp-playlist wp-%s-playlist wp-playlist-%s">', 
+        $html .= sprintf( '<div class="wp-playlist wp-%s-playlist wp-playlist-%s ' .  esc_attr( $atts['class'] ) . '">', 
 	    $this->type, 
-            $atts['style'] 
+            esc_attr( $atts['style'] )
         );
 
         // Current audio item:
@@ -95,18 +96,20 @@ class Playlist
         }
 
         // Video player:					  
-        if( 'video' === $this->type ):
-            $html .= sprintf( '<video controls="controls" preload="none" width="%s" height="%s"></video>',
-                $atts['style'],
-                $atts['width'],
-                $atts['height']
+        if( 'video' === $this->type )
+        {
+            $html .= sprintf( '<video controls="controls" ' . $autoplay . ' preload="none" width="%s" height="%s"></video>',
+                $width,
+                $height
             );
+        }
         // Audio player:					  
-        else:
-            $html .= sprintf( '<audio controls="controls" preload="metadata"></audio>', 
-                $atts['style'] 
+        else
+        {
+            $html .= sprintf( '<audio controls="controls" ' . $autoplay . ' preload="none" width="%s" style="visibility: hidden"></audio>', 
+                $width 
             );
-        endif;
+        }
 
         // Next/Previous:
         $html .= '<div class="wp-playlist-next"></div><div class="wp-playlist-prev"></div>';
@@ -121,16 +124,35 @@ class Playlist
                 "artists":%b,
                 "tracks":[%s]
             }</script></div>', 
-            $atts['type'], 
-            $atts['tracklist'], 
-            $atts['tracknumbers'],  
-            $atts['images'],
-            $atts['artists'],
-            $content
+            esc_attr( $atts['type'] ), 
+            wp_validate_boolean( $atts['tracklist'] ), 
+            wp_validate_boolean( $atts['tracknumbers'] ),  
+            wp_validate_boolean( $atts['images'] ),
+            wp_validate_boolean( $atts['artists'] ),
+            $this->get_tracs_from_content( $content )
         );
 
         return $html;
+    }
+
+  
+    /**
+     * Get tracs from the wpse_playlist shortcode content string
+     */
+
+    private function get_tracs_from_content( $content )
+    {
+        // Get tracs:
+	$content = strip_tags( nl2br( do_shortcode( $content ) ) );
+	
+        // Replace last comma:
+        if( FALSE !== ( $pos = strrpos( $content, ',' ) ) )
+        {
+            $content = substr_replace( $content, '', $pos, 1 );
         }
+				
+        return $content;
+    }
 
 
     /**
@@ -141,29 +163,32 @@ class Playlist
     {        
         $atts = shortcode_atts( 
             array(
-            'src'                   => '',
-            'type'                  => ( 'video' === $this->type ) ? 'video/mp4' : 'audio/mpeg',
-            'title'                 => '',
-            'caption'               => '',
-            'description'           => '',
-            'image_src'             => sprintf( '%s/wp-includes/images/media/%s.png', get_site_url(), $this->type ),
-            'image_width'           => '48',
-            'image_height'          => '64',
-            'thumb_src'             => sprintf( '%s/wp-includes/images/media/%s.png', get_site_url(), $this->type ),
-            'thumb_width'           => '48',
-            'thumb_height'          => '64',
-            'meta_artist'           => '',
-            'meta_album'            => '',
-            'meta_genre'            => '',
-            'meta_length_formatted' => '',
-            'dimensions_original_width'  => '300',
-            'dimensions_original_height' => '200',
-            'dimensions_resized_width'   => '600',
-            'dimensions_resized_height'  => '400',
-        ), $atts, 'wpse_trac_shortcode' );
+                'src'                        => '',
+                'type'                       => ( 'video' === $this->type ) ? 'video/mp4' : 'audio/mpeg',
+                'title'                      => '',
+                'caption'                    => '',
+                'description'                => '',
+                'image_src'                  => sprintf( '%s/wp-includes/images/media/%s.png', get_site_url(), $this->type ),
+                'image_width'                => '48',
+                'image_height'               => '64',
+                'thumb_src'                  => sprintf( '%s/wp-includes/images/media/%s.png', get_site_url(), $this->type ),
+                'thumb_width'                => '48',
+                'thumb_height'               => '64',
+                'meta_artist'                => '',
+                'meta_album'                 => '',
+                'meta_genre'                 => '',
+                'meta_length_formatted'      => '',
+                'dimensions_original_width'  => '300',
+                'dimensions_original_height' => '200',
+                'dimensions_resized_width'   => '600',
+                'dimensions_resized_height'  => '400',
+            ), 
+            $atts, 
+            'wpse_trac_shortcode' 
+        );
 
         //----------
-        // Input
+        // Data output:
         //----------
         $data['src']                      = esc_url( $atts['src'] );
         $data['title']                    = sanitize_text_field( $atts['title'] );
@@ -188,14 +213,11 @@ class Playlist
 
     	// Audio related:
         } else {
-            $data['meta']['artist']           = sanitize_text_field( $atts['meta_artist'] );
-            $data['meta']['album']            = sanitize_text_field( $atts['meta_album'] );
-            $data['meta']['genre']            = sanitize_text_field( $atts['meta_genre'] );
+            $data['meta']['artist'] = sanitize_text_field( $atts['meta_artist'] );
+            $data['meta']['album']  = sanitize_text_field( $atts['meta_album'] );
+            $data['meta']['genre']  = sanitize_text_field( $atts['meta_genre'] );
         }
 
-        //----------
-        // Output:           
-        //----------
         return json_encode( $data ) . ',';      
     }
 
