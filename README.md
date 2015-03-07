@@ -96,7 +96,6 @@ Any suggestions are welcomed.
 ###Changelog
 
 0.0.6 (2015-03-07) 
-
     - Added: Support for the autoplay attribute.
     - Added: Support for the GitHub Updater. (Probs: @BlaineMoore)
     - Added: More info in the README.md file.
@@ -104,5 +103,4 @@ Any suggestions are welcomed.
     - Fixed: Some minor adjustments.
 
 0.0.5 
-
     - Fixed: added the missing script class to support WordPress 4.0 (Props: @ruLait)
