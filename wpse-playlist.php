@@ -1,11 +1,12 @@
 <?php 
 /**
- * Plugin Name: WPSE Playlist shortcode for external files
- * Description: This plugin allows you to use external audio or video files with the native WordPress playlist, through the use of the [wpse_playlist] and [wpse_trac] shortcodes.
- * Plugin URI:  https://github.com/birgire/wpse-playlist
- * Author:      birgire
- * Author URI:  https://github.com/birgire
- * Version:     0.0.5
+ * Plugin Name:       WPSE Playlist shortcode for external files
+ * Description:       This plugin allows you to use external audio or video files with the native WordPress playlist, through the use of the [wpse_playlist] and [wpse_trac] shortcodes.
+ * Plugin URI:        https://github.com/birgire/wpse-playlist
+ * GitHub Plugin URI: https://github.com/birgire/wpse-playlist.git
+ * Author:            Birgir Erlendsson (birgire)
+ * Author URI:        https://github.com/birgire
+ * Version:           0.0.6
  */
 
 namespace birgire;
