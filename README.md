@@ -1,21 +1,21 @@
 wpse-playlist
 =================
 
-WordPress - Playlist shortcode with external audio or video files
+WordPress - Playlist shortcode with support for external audio and video files.
 
 ###Description
 
 This plugin allows you to use external audio or video files with the native WordPress playlist, through the use of a shortcode.
 
-This started as an answer on WordPress StackExchange, see [here](http://wordpress.stackexchange.com/questions/141766/making-audio-playlist-with-external-audio-files/).
+This started as an answer on WordPress StackExchange, see [here](http://wordpress.stackexchange.com/questions/141766/making-audio-playlist-with-external-audio-files/), hence the name wpse-playlist.
 
 The plugin works on PHP 5.3+ and WordPress 4.0+ 
 
 It supports the GitHub Updater.
 
-###Supported shortcodes and their default attributes:
+###Supported shortcodes and default attributes:
 
-    [wpse_playlist type="audio" 
+    [_playlist type="audio" 
                    class="wpse-playlist" 
                    current="true" 
                    autoplay="false" 
@@ -29,7 +29,7 @@ It supports the GitHub Updater.
                    outer="20"
                    default_width="640"
                    default_height="380"]
-        [wpse_trac src="" 
+        [_track src="" 
                    title="" 
                    type="audio/mpeg" 
                    caption="" 
@@ -49,51 +49,57 @@ It supports the GitHub Updater.
                    dimensions_original_height="200"
                    dimensions_resized_width="600" 
                    dimensions_resized_height="400"]
-    [/wpse_playlist]
+    [/_playlist]
 
-where one can add multiple `[wpse_trac]`, one for each trac, inside `[wpse_playlist]`.
+where one can add multiple `[_track]`, one for each track, inside `[_playlist]`.
+
+The shortcodes `[wpse_trac]` and `[wpse_playlist]` are also supported, but are deprecated.
 
 When the `width` and `height` is empty, the global `$content_width` is used to calculate these values.
 
-When the playlist type is `"video"` then the trac type is automatically set to `"video/mp4"` as the default value.
+When the playlist type is `"video"` the track type is automatically set to `"video/mp4"` as the default value.
 
-The attributes  `artists`, `images`, `meta_artist`, `meta_album`, `meta_genre` are only audio related.
+The attributes  `artists`, `images`, `meta_artist`, `meta_album` and `meta_genre` are only audio related.
 
 Similarly the `dimensions_original_width`, `dimensions_original_height`, `dimensions_resized_width`, `dimensions_resized_height` are only video related.
 
 ###Example 1
 
-    [wpse_playlist]
-       [wpse_trac title="Ain't Misbehavin'" src="//s.w.org/images/core/3.9/AintMisbehavin.mp3"]
-       [wpse_trac title="Buddy Bolden's Blues" src="//s.w.org/images/core/3.9/JellyRollMorton-BuddyBoldensBlues.mp3"]
-    [/wpse_playlist]
+A simple example for the audio playlist:
 
-
-The global settings are under `options-writing.php`:
+    [_playlist]
+       [_track title="Ain't Misbehavin'" src="//s.w.org/images/core/3.9/AintMisbehavin.mp3"]
+       [_track title="Buddy Bolden's Blues" src="//s.w.org/images/core/3.9/JellyRollMorton-BuddyBoldensBlues.mp3"]
+    [/_playlist]
  
 
 ###Example 2
 
-The vanilla  version is generated with:
+The vanilla audio version is generated with:
 
-    [wpse_playlist type="audio" current="no" tracklist="yes" tracknumbers="no" images="no" artist="no"]
-        [wpse_trac title="Davenport Blues" src="//s.w.org/images/core/3.9/DavenportBlues.mp3"]
-        [wpse_trac title="Dixie Blues" src="//s.w.org/images/core/3.9/Louisiana_Five-Dixie_Blues-1919.mp3"]
-    [/wpse_playlist]
+    [_playlist type="audio" current="no" tracklist="yes" tracknumbers="no" images="no" artist="no"]
+        [_track title="Davenport Blues" src="//s.w.org/images/core/3.9/DavenportBlues.mp3"]
+        [_track title="Dixie Blues" src="//s.w.org/images/core/3.9/Louisiana_Five-Dixie_Blues-1919.mp3"]
+    [/_playlist]
 
 ###Example 3
 
 The video playlist can be generated with:
 
-    [wpse_playlist type="video"]
-        [wpse_trac caption="Live widgets previews in WordPress 3.9" src="//s.w.org/images/core/3.9/widgets.mp4" image_src="/wp-content/uploads/2014/04/widgets_screen.png"]
-        [wpse_trac caption="Another cool video showing how live widgets previews works in WordPress 3.9" src="//s.w.org/images/core/3.9/widgets.mp4" image_src="/wp-content/uploads/2014/04/widgets_screen2.png"]
-    [/wpse_playlist]
+    [_playlist type="video"]
+        [_track caption="Live widgets previews in WordPress 3.9" src="//s.w.org/images/core/3.9/widgets.mp4" image_src="/wp-content/uploads/2014/04/widgets_screen.png"]
+        [_track caption="Another cool video showing how live widgets previews works in WordPress 3.9" src="//s.w.org/images/core/3.9/widgets.mp4" image_src="/wp-content/uploads/2014/04/widgets_screen2.png"]
+    [/_playlist]
 
 
 Any suggestions are welcomed.
 
 ###Changelog
+
+0.0.7 (2015-03-08) 
+
+    - Added: New shortcodes [_playlist] and [_track].
+    - Deprecated: The support for the shortcodes [wpse_playlist] and [wpse_trac] will phase out. 
 
 0.0.6 (2015-03-07) 
 
