@@ -1,10 +1,10 @@
 <?php
 
+namespace birgire;
+
 /**
  * Class Playlist
  */
-
-namespace birgire;
 
 class Playlist
 {
@@ -18,13 +18,17 @@ class Playlist
  
     public function init()
     {
-        add_shortcode( 'wpse_playlist', array( $this, 'playlist_shortcode' ) );
-        add_shortcode( 'wpse_trac',     array( $this, 'trac_shortcode'     ) );
+        add_shortcode( '_playlist',     array( $this, 'playlist_shortcode'  ) );
+        add_shortcode( '_track',        array( $this, 'track_shortcode'     ) );
+
+        // Deprecated:
+        add_shortcode( 'wpse_playlist', array( $this, 'playlist_shortcode'  ) );
+        add_shortcode( 'wpse_trac',     array( $this, 'track_shortcode'     ) );
     }
 
 
     /**
-     * Callback for the [wpse_playlist] shortcode
+     * Callback for the [_playlist] shortcode
      *
      * @uses wp_validate_boolean() from WordPress 4.0
      */
@@ -83,7 +87,10 @@ class Playlist
         //----------
         // Output
         //----------
+
         $html = '';
+
+        // Start div container:
         $html .= sprintf( '<div class="wp-playlist wp-%s-playlist wp-playlist-%s ' .  esc_attr( $atts['class'] ) . '">', 
 	    $this->type, 
             esc_attr( $atts['style'] )
@@ -123,24 +130,27 @@ class Playlist
                 "images":%b,
                 "artists":%b,
                 "tracks":[%s]
-            }</script></div>', 
+            }</script>', 
             esc_attr( $atts['type'] ), 
             wp_validate_boolean( $atts['tracklist'] ), 
             wp_validate_boolean( $atts['tracknumbers'] ),  
             wp_validate_boolean( $atts['images'] ),
             wp_validate_boolean( $atts['artists'] ),
-            $this->get_tracs_from_content( $content )
+            $this->get_tracks_from_content( $content )
         );
+
+        // Close div container:
+        $html .= '</div>';
 
         return $html;
     }
 
   
     /**
-     * Get tracs from the wpse_playlist shortcode content string
+     * Get tracks from the [_playlist] shortcode content string
      */
 
-    private function get_tracs_from_content( $content )
+    private function get_tracks_from_content( $content )
     {
         // Get tracs:
 	$content = strip_tags( nl2br( do_shortcode( $content ) ) );
@@ -156,10 +166,10 @@ class Playlist
 
 
     /**
-     * Callback for the [wpse_trac] shortcode
+     * Callback for the [_track] shortcode
      */
 
-    public function trac_shortcode( $atts = array(), $content = '' ) 
+    public function track_shortcode( $atts = array(), $content = '' ) 
     {        
         $atts = shortcode_atts( 
             array(
@@ -184,7 +194,7 @@ class Playlist
                 'dimensions_resized_height'  => '400',
             ), 
             $atts, 
-            'wpse_trac_shortcode' 
+            'wpse_track_shortcode' 
         );
 
         //----------
