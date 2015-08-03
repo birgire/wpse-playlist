@@ -35,7 +35,6 @@ class Playlist
 	 
     public function playlist_shortcode( $atts = array(), $content = '' ) 
     {        
-echo '123';
         global $content_width;  // Theme dependent content width
         $this->instance++;      // Counter to activate the 'wp_playlist_scripts' action only once
 
