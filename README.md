@@ -100,7 +100,7 @@ Any suggestions are welcomed.
 
 ###Changelog
 
-0.0.8 (2015-08-02)
+0.0.9 (2015-08-02)
 
     - Fixed: Issue #7 by using true/false instead of 1/0 (Props: @X-PRESSIVE)
 
