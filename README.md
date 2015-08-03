@@ -96,6 +96,11 @@ Any suggestions are welcomed.
 
 ###Changelog
 
+0.0.8 (2015-08-02)
+
+    - Fixed: Issue #7 by using true/false instead of 1/0 (Probs: @X-PRESSIVE)
+
+
 0.0.7 (2015-03-08) 
 
     - Added: New shortcodes [_playlist] and [_track].

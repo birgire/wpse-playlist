@@ -35,6 +35,7 @@ class Playlist
 	 
     public function playlist_shortcode( $atts = array(), $content = '' ) 
     {        
+echo '123';
         global $content_width;  // Theme dependent content width
         $this->instance++;      // Counter to activate the 'wp_playlist_scripts' action only once
 
@@ -125,17 +126,17 @@ class Playlist
         $html .= sprintf( '
             <script class="wp-playlist-script" type="application/json">{
                 "type":"%s",
-                "tracklist":%b,
-                "tracknumbers":%b,
-                "images":%b,
-                "artists":%b,
+                "tracklist":%s,
+                "tracknumbers":%s,
+                "images":%s,
+                "artists":%s,
                 "tracks":[%s]
             }</script>', 
             esc_attr( $atts['type'] ), 
-            wp_validate_boolean( $atts['tracklist'] ), 
-            wp_validate_boolean( $atts['tracknumbers'] ),  
-            wp_validate_boolean( $atts['images'] ),
-            wp_validate_boolean( $atts['artists'] ),
+            wp_validate_boolean( $atts['tracklist'] ) ? 'true' : 'false', 
+            wp_validate_boolean( $atts['tracknumbers'] ) ? 'true' : 'false',  
+            wp_validate_boolean( $atts['images'] ) ? 'true' : 'false',
+            wp_validate_boolean( $atts['artists'] ) ? 'true' : 'false',
             $this->get_tracks_from_content( $content )
         );
 
