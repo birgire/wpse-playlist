@@ -63,6 +63,10 @@ The attributes  `artists`, `images`, `meta_artist`, `meta_album` and `meta_genre
 
 Similarly the `dimensions_original_width`, `dimensions_original_height`, `dimensions_resized_width`, `dimensions_resized_height` are only video related.
 
+###Demo
+
+[Check it out here.](http://xlino.com/projects/wordpress-playlist-shortcode-with-external-audio-or-video-files/)
+
 ###Example 1
 
 A simple example for the audio playlist:
@@ -98,7 +102,7 @@ Any suggestions are welcomed.
 
 0.0.8 (2015-08-02)
 
-    - Fixed: Issue #7 by using true/false instead of 1/0 (Probs: @X-PRESSIVE)
+    - Fixed: Issue #7 by using true/false instead of 1/0 (Props: @X-PRESSIVE)
 
 
 0.0.7 (2015-03-08) 
