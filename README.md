@@ -3,7 +3,7 @@ wpse-playlist
 
 WordPress - Playlist shortcode with support for external audio and video files.
 
-###Description
+### Description
 
 This plugin allows you to use external audio or video files with the native WordPress playlist, through the use of a shortcode.
 
@@ -13,7 +13,7 @@ The plugin works on PHP 5.3+ and WordPress 4.0+
 
 It supports the GitHub Updater.
 
-###Supported shortcodes and default attributes:
+### Supported shortcodes and default attributes:
 
     [_playlist type="audio" 
                    class="wpse-playlist" 
@@ -63,7 +63,7 @@ The attributes  `artists`, `images`, `meta_artist`, `meta_album` and `meta_genre
 
 Similarly the `dimensions_original_width`, `dimensions_original_height`, `dimensions_resized_width`, `dimensions_resized_height` are only video related.
 
-###Demo
+### Demo
 
 [Check it out here.](http://xlino.com/projects/wordpress-playlist-shortcode-with-external-audio-or-video-files/)
 
@@ -77,7 +77,7 @@ A simple example for the audio playlist:
     [/_playlist]
  
 
-###Example 2
+### Example 2
 
 The vanilla audio version is generated with:
 
@@ -86,7 +86,7 @@ The vanilla audio version is generated with:
         [_track title="Dixie Blues" src="//s.w.org/images/core/3.9/Louisiana_Five-Dixie_Blues-1919.mp3"]
     [/_playlist]
 
-###Example 3
+### Example 3
 
 The video playlist can be generated with:
 
@@ -98,7 +98,7 @@ The video playlist can be generated with:
 
 Any suggestions are welcomed.
 
-###Changelog
+### Changelog
 
 0.0.9 (2015-08-02)
 
