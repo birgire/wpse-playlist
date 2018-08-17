@@ -67,7 +67,7 @@ Similarly the `dimensions_original_width`, `dimensions_original_height`, `dimens
 
 [Check it out here.](http://xlino.com/projects/wordpress-playlist-shortcode-with-external-audio-or-video-files/)
 
-###Example 1
+### Example 1
 
 A simple example for the audio playlist:
 
