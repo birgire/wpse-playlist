@@ -11,6 +11,8 @@ This started as an answer on WordPress StackExchange, see [here](http://wordpres
 
 The plugin works on PHP 5.3+ and WordPress 4.0+ 
 
+Tested up to WordPress 5.8.1
+
 It supports the GitHub Updater.
 
 ### Supported shortcodes and default attributes:
