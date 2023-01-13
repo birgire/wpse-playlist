@@ -6,15 +6,11 @@
  * GitHub Plugin URI: https://github.com/birgire/wpse-playlist.git
  * Author:            Birgir Erlendsson (birgire)
  * Author URI:        https://github.com/birgire
+ * Requires PHP:      5.3.3
  * Version:           0.0.11
  */
 
 namespace birgire;
-
-/**
- * Minimum PHP version.
- */
-define( 'WPSE_PLAYLIST_MIN_PHP_VER', '5.3.3' );
 
 /**
  * Autoload classes.
@@ -37,7 +33,6 @@ spl_autoload_register(
  */
 
 add_action( 'wp', '\birgire\playlist_init' );
-
 function playlist_init() {
     if( class_exists( '\birgire\Playlist' ) ) {
         $playlist = new \birgire\Playlist;
