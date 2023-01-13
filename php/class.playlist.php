@@ -3,21 +3,18 @@
 namespace birgire;
 
 /**
- * Class Playlist
+ * Class Playlist.
  */
 
-class Playlist
-{
+class Playlist {
     protected $type     = '';
     protected $types    = array( 'audio', 'video' );
     protected $instance = 0;
     
     /**
-     * Init - Register shortcodes
-     */
- 
-    public function init()
-    {
+     * Init - Register shortcodes.
+     */ 
+    public function init() {
         add_shortcode( '_playlist',     array( $this, 'playlist_shortcode'  ) );
         add_shortcode( '_track',        array( $this, 'track_shortcode'     ) );
 
@@ -26,15 +23,10 @@ class Playlist
         add_shortcode( 'wpse_trac',     array( $this, 'track_shortcode'     ) );
     }
 
-
     /**
-     * Callback for the [_playlist] shortcode
-     *
-     * @uses wp_validate_boolean() from WordPress 4.0
+     * Callback for the [_playlist] shortcode.
      */
-	 
-    public function playlist_shortcode( $atts = array(), $content = '' ) 
-    {        
+    public function playlist_shortcode( $atts = array(), $content = '' ) {
         global $content_width;  // Theme dependent content width
         $this->instance++;      // Counter to activate the 'wp_playlist_scripts' action only once
 
@@ -47,13 +39,13 @@ class Playlist
                 'images'         => 'true',     // Audio related
                 'artists'        => 'true',     // Audio related
                 'current'        => 'true',
-		'autoplay'       => 'false',
-		'class'          => 'wpse-playlist',
-		'width'          => '',
-		'height'         => '',
-		'outer'          => '20',
-		'default_width'  => '640',
-		'default_height' => '380',
+                'autoplay'       => 'false',
+                'class'          => 'wpse-playlist',
+                'width'          => '',
+                'height'         => '',
+                'outer'          => '20',
+                'default_width'  => '640',
+                'default_height' => '380',
             ), 
             $atts, 
             'wpse_playlist_shortcode' 
@@ -66,53 +58,50 @@ class Playlist
         $this->type = ( in_array( $atts['type'], $this->types, TRUE ) ) ? esc_attr( $atts['type'] ) : 'audio';
  
         // Enqueue default scripts and styles for the playlist.
-        ( 1 === $this->instance ) && do_action( 'wp_playlist_scripts', esc_attr( $atts['type'] ), esc_attr( $atts['style'] ) );
-        
-        //----------
-        // Height & Width - Adjusted from the WordPress core
-        //----------
+        if (1 === $this->instance) {
+            do_action( 'wp_playlist_scripts', esc_attr($atts['type']), esc_attr($atts['style']));
+        }
+
+        // Height & Width - Adjusted from the WordPress core.
         
         $width = esc_attr( $atts['width'] );       
-        if( empty( $width ) )
+        if( empty( $width ) ) {
             $width = empty( $content_width ) 
                 ? intval( $atts['default_width'] ) 
                 : ( $content_width - intval( $atts['outer'] ) );
-       
+        }
+
         $height = esc_attr( $atts['height'] );       
-        if( empty( $height ) && intval( $atts['default_height'] ) > 0 )
+        if( empty( $height ) && intval( $atts['default_height'] ) > 0 ) {
             $height = empty( $content_width ) 
                 ? intval( $atts['default_height'] )
                 : round( ( intval( $atts['default_height'] ) * $width ) / intval( $atts['default_width'] ) );
+        }
 
-        //----------
         // Output
-        //----------
-
         $html = '';
 
         // Start div container:
         $html .= sprintf( '<div class="wp-playlist wp-%s-playlist wp-playlist-%s ' .  esc_attr( $atts['class'] ) . '">', 
-	    $this->type, 
+    	    $this->type, 
             esc_attr( $atts['style'] )
         );
 
         // Current audio item:
-        if( $atts['current'] && 'audio' === $this->type )
-	{
+        if( $atts['current'] && 'audio' === $this->type ) {
             $html .= '<div class="wp-playlist-current-item"></div>';   
         }
 
         // Video player:					  
-        if( 'video' === $this->type )
-        {
+        if( 'video' === $this->type ) {
             $html .= sprintf( '<video controls="controls" ' . $autoplay . ' preload="none" width="%s" height="%s"></video>',
                 $width,
                 $height
             );
         }
+
         // Audio player:					  
-        else
-        {
+        else {
             $html .= sprintf( '<audio controls="controls" ' . $autoplay . ' preload="none" width="%s" style="visibility: hidden"></audio>', 
                 $width 
             );
@@ -153,24 +142,20 @@ class Playlist
     private function get_tracks_from_content( $content )
     {
         // Get tracs:
-	$content = strip_tags( nl2br( do_shortcode( $content ) ) );
+    	$content = strip_tags( nl2br( do_shortcode( $content ) ) );
 	
         // Replace last comma:
-        if( FALSE !== ( $pos = strrpos( $content, ',' ) ) )
-        {
+        if( FALSE !== ( $pos = strrpos( $content, ',' ) ) ) {
             $content = substr_replace( $content, '', $pos, 1 );
         }
 				
         return $content;
     }
 
-
     /**
-     * Callback for the [_track] shortcode
+     * Callback for the [_track] shortcode.
      */
-
-    public function track_shortcode( $atts = array(), $content = '' ) 
-    {        
+    public function track_shortcode( $atts = array(), $content = '' ) {
         $atts = shortcode_atts( 
             array(
                 'src'                        => '',
@@ -197,9 +182,7 @@ class Playlist
             'wpse_track_shortcode' 
         );
 
-        //----------
-        // Data output:
-        //----------
+        // Data output.
         $data['src']                      = esc_url_raw( $atts['src'] );
         $data['title']                    = sanitize_text_field( $atts['title'] );
         $data['type']                     = sanitize_text_field( $atts['type'] );
@@ -213,15 +196,14 @@ class Playlist
         $data['thumb']['height']          = intval( $atts['thumb_height'] );
         $data['meta']['length_formatted'] = sanitize_text_field( $atts['meta_length_formatted'] );
 
-        // Video related:
-        if( 'video' === $this->type ) 
-        {
+        // Video related.
+        if( 'video' === $this->type ) {
             $data['dimensions']['original']['width']  = sanitize_text_field( $atts['dimensions_original_width'] );
             $data['dimensions']['original']['height'] = sanitize_text_field( $atts['dimensions_original_height'] );
             $data['dimensions']['resized']['width']   = sanitize_text_field( $atts['dimensions_resized_width'] );
             $data['dimensions']['resized']['height']  = sanitize_text_field( $atts['dimensions_resized_height'] );
 
-    	// Audio related:
+    	// Audio related.
         } else {
             $data['meta']['artist'] = sanitize_text_field( $atts['meta_artist'] );
             $data['meta']['album']  = sanitize_text_field( $atts['meta_album'] );
@@ -231,6 +213,4 @@ class Playlist
         return json_encode( $data ) . ',';      
     }
 
-} // end class
-
-
+}
