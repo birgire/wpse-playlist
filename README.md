@@ -102,6 +102,11 @@ Any suggestions are welcomed.
 
 ### Changelog
 
+0.0.11 (2023-01-13)
+
+    - Fixed: Some formatting issues.
+    - Fixed: Removed an unused constant and added instead a Requires header just for info. 
+
 0.0.10 (2023-01-13)
 
     - Fixed: Issue #20 re-evaluated by using esc_url_raw to support multiple GET parameters in Google Drive links (Props: @honoluluman2, @mikigp)
