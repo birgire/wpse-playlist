@@ -200,7 +200,7 @@ class Playlist
         //----------
         // Data output:
         //----------
-        $data['src']                      = esc_url( $atts['src'] );
+        $data['src']                      = esc_url_raw( $atts['src'] );
         $data['title']                    = sanitize_text_field( $atts['title'] );
         $data['type']                     = sanitize_text_field( $atts['type'] );
         $data['caption']                  = sanitize_text_field( $atts['caption'] );

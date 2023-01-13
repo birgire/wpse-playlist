@@ -102,10 +102,13 @@ Any suggestions are welcomed.
 
 ### Changelog
 
+0.0.10 (2023-01-13)
+
+    - Fixed: Issue #20 re-evaluated by using esc_url_raw to support multiple GET parameters in Google Drive links (Props: @honoluluman2, @mikigp)
+
 0.0.9 (2015-08-02)
 
     - Fixed: Issue #7 by using true/false instead of 1/0 (Props: @X-PRESSIVE)
-
 
 0.0.7 (2015-03-08) 
 
